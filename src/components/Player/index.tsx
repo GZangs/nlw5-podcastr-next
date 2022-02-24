@@ -1,10 +1,19 @@
+import Image from "next/image";
+
+import playingPic from "../../../public/playing.svg";
+import shufflePic from "../../../public/shuffle.svg";
+import playPrevPic from "../../../public/play-previous.svg";
+import playPic from "../../../public/play.svg";
+import playNextPic from "../../../public/play-next.svg";
+import repeatPic from "../../../public/repeat.svg";
+
 import styles from "./styles.module.scss";
 
 export function Player() {
   return (
     <div className={styles.playerContainer}>
       <header>
-        <img src="/playing.svg" alt="Tocando agora" />
+        <Image src={playingPic} alt="Tocando agora" />
         <strong>Tocando agora</strong>
       </header>
 
@@ -23,19 +32,19 @@ export function Player() {
 
         <div className={styles.buttons}>
           <button type="button">
-            <img src="/shuffle.svg" alt="Embaralhar" />
+            <Image src={shufflePic} alt="Embaralhar" />
           </button>
           <button type="button">
-            <img src="/play-previous.svg" alt="Tocar anterior" />
+            <Image src={playPrevPic} alt="Tocar anterior" />
           </button>
           <button type="button" className={styles.playButton}>
-            <img src="/play.svg" alt="Tocar" />
+            <Image src={playPic} alt="Tocar" />
           </button>
           <button type="button">
-            <img src="/play-next.svg" alt="Tocar próxima" />
+            <Image src={playNextPic} alt="Tocar próxima" />
           </button>
           <button type="button">
-            <img src="/repeat.svg" alt="Repetir" />
+            <Image src={repeatPic} alt="Repetir" />
           </button>
         </div>
       </footer>
