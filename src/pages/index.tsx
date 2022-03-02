@@ -9,6 +9,7 @@ import { convertDurationToTimeString } from "../utils/convertDurationToTimeStrin
 import playGreenPic from "../../public/play-green.svg";
 
 import styles from "./home.module.scss";
+import usePlayerContext from "../contexts/PlayerContext";
 
 type IApiEpisode = {
   id: string;
@@ -39,6 +40,8 @@ type HomeProps = {
 };
 
 const Home: NextPage<HomeProps> = ({ latestEpisodes, allEpisodes }) => {
+  const { play } = usePlayerContext();
+
   return (
     <div className={styles.homepage}>
       <section className={styles.latestEpisodes}>
@@ -65,7 +68,7 @@ const Home: NextPage<HomeProps> = ({ latestEpisodes, allEpisodes }) => {
                   <span>{episode.durationAsString}</span>
                 </div>
 
-                <button type="button">
+                <button type="button" onClick={() => play(episode)}>
                   <Image src={playGreenPic} alt="Tocar episódio" />
                 </button>
               </li>
