@@ -1,6 +1,8 @@
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -11,8 +13,6 @@ import { api } from "../../services/api";
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
 
 import styles from "./episode.module.scss";
-import Image from "next/image";
-import Link from "next/link";
 
 type Episode = {
   id: string;
@@ -35,8 +35,6 @@ interface Params extends ParsedUrlQuery {
 }
 
 const Episode: NextPage<EpisodeProps> = ({ episode }) => {
-  const router = useRouter();
-
   return (
     <div className={styles.episode}>
       <div className={styles.thumbnailContainer}>
@@ -75,8 +73,24 @@ const Episode: NextPage<EpisodeProps> = ({ episode }) => {
 export default Episode;
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const { data } = await api.get("episodes", {
+    params: {
+      _limit: 2,
+      _sort: "_published_at",
+      _order: "desc",
+    },
+  });
+
+  const paths = data.map((episode: Episode) => {
+    return {
+      params: {
+        slug: episode.id,
+      },
+    };
+  });
+
   return {
-    paths: [],
+    paths,
     fallback: "blocking",
   };
 };
