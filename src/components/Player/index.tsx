@@ -1,4 +1,5 @@
 import Image from "next/image";
+import usePlayerContext from "../../contexts/PlayerContext";
 
 import playingPic from "../../../public/playing.svg";
 import shufflePic from "../../../public/shuffle.svg";
@@ -10,6 +11,9 @@ import repeatPic from "../../../public/repeat.svg";
 import styles from "./styles.module.scss";
 
 export function Player() {
+  const { episodeList, currentEpisodeIndex } = usePlayerContext();
+  const episode = episodeList[currentEpisodeIndex];
+
   return (
     <div className={styles.playerContainer}>
       <header>
@@ -17,9 +21,23 @@ export function Player() {
         <strong>Tocando agora</strong>
       </header>
 
-      <div className={styles.emptyPlayer}>
-        <strong>Selecione um podcast para ouvir</strong>
-      </div>
+      {episode ? (
+        <div className={styles.currentEpisode}>
+          <Image
+            width={592}
+            height={592}
+            src={episode.thumbnail}
+            objectFit="cover"
+            alt={episode.title}
+          />
+          <strong>{episode.title}</strong>
+          <span>{episode.members}</span>
+        </div>
+      ) : (
+        <div className={styles.emptyPlayer}>
+          <strong>Selecione um podcast para ouvir</strong>
+        </div>
+      )}
 
       <footer>
         <div className={styles.progress}>
