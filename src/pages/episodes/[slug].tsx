@@ -2,12 +2,12 @@ import { ParsedUrlQuery } from "querystring";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 import arrowLeftPic from "../../../public/arrow-left.svg";
 import playPic from "../../../public/play.svg";
+import usePlayer from "../../contexts/PlayerContext";
 
 import { api } from "../../services/api";
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
@@ -35,6 +35,8 @@ interface Params extends ParsedUrlQuery {
 }
 
 const Episode: NextPage<EpisodeProps> = ({ episode }) => {
+  const { play } = usePlayer();
+
   return (
     <div className={styles.episode}>
       <div className={styles.thumbnailContainer}>
@@ -50,7 +52,7 @@ const Episode: NextPage<EpisodeProps> = ({ episode }) => {
           alt={episode.title}
           objectFit="cover"
         />
-        <button type="button">
+        <button type="button" onClick={() => play(episode)}>
           <Image src={playPic} alt="Tocar episódio" />
         </button>
       </div>

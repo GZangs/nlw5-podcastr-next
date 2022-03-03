@@ -9,7 +9,7 @@ import { convertDurationToTimeString } from "../utils/convertDurationToTimeStrin
 import playGreenPic from "../../public/play-green.svg";
 
 import styles from "./home.module.scss";
-import usePlayerContext from "../contexts/PlayerContext";
+import usePlayer from "../contexts/PlayerContext";
 
 type IApiEpisode = {
   id: string;
@@ -40,7 +40,9 @@ type HomeProps = {
 };
 
 const Home: NextPage<HomeProps> = ({ latestEpisodes, allEpisodes }) => {
-  const { play } = usePlayerContext();
+  const { playList } = usePlayer();
+
+  const episodeList = [...latestEpisodes, ...allEpisodes];
 
   return (
     <div className={styles.homepage}>
@@ -48,7 +50,7 @@ const Home: NextPage<HomeProps> = ({ latestEpisodes, allEpisodes }) => {
         <h2>Últimos lançamentos</h2>
 
         <ul>
-          {latestEpisodes.map((episode) => {
+          {latestEpisodes.map((episode, index) => {
             return (
               <li key={episode.id}>
                 <Image
@@ -68,7 +70,10 @@ const Home: NextPage<HomeProps> = ({ latestEpisodes, allEpisodes }) => {
                   <span>{episode.durationAsString}</span>
                 </div>
 
-                <button type="button" onClick={() => play(episode)}>
+                <button
+                  type="button"
+                  onClick={() => playList(episodeList, index)}
+                >
                   <Image src={playGreenPic} alt="Tocar episódio" />
                 </button>
               </li>
@@ -91,7 +96,7 @@ const Home: NextPage<HomeProps> = ({ latestEpisodes, allEpisodes }) => {
             </tr>
           </thead>
           <tbody>
-            {allEpisodes.map((episode) => {
+            {allEpisodes.map((episode, index) => {
               return (
                 <tr key={episode.id}>
                   <td style={{ width: 72 }}>
@@ -112,7 +117,12 @@ const Home: NextPage<HomeProps> = ({ latestEpisodes, allEpisodes }) => {
                   <td style={{ width: 100 }}>{episode.publishedAt}</td>
                   <td>{episode.durationAsString}</td>
                   <td>
-                    <button type="button">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        playList(episodeList, index + latestEpisodes.length)
+                      }
+                    >
                       <Image src={playGreenPic} alt="Tocar episódio" />
                     </button>
                   </td>
