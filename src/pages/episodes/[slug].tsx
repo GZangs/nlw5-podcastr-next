@@ -1,5 +1,6 @@
 import { ParsedUrlQuery } from "querystring";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import { format, parseISO } from "date-fns";
@@ -7,10 +8,11 @@ import { ptBR } from "date-fns/locale";
 
 import arrowLeftPic from "../../../public/arrow-left.svg";
 import playPic from "../../../public/play.svg";
-import usePlayer from "../../contexts/PlayerContext";
 
 import { api } from "../../services/api";
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
+
+import usePlayer from "../../contexts/PlayerContext";
 
 import styles from "./episode.module.scss";
 
@@ -39,6 +41,9 @@ const Episode: NextPage<EpisodeProps> = ({ episode }) => {
 
   return (
     <div className={styles.episode}>
+      <Head>
+        <title>{episode.title} | Podcastr</title>
+      </Head>
       <div className={styles.thumbnailContainer}>
         <Link href="/" passHref>
           <button type="button">
